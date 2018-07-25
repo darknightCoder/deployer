@@ -1,0 +1,11 @@
+version: "3"
+services:
+  geth-service:
+     image: foamspace/cliquebait:latest
+     ports: 
+       - "8545:8545"
+     networks: 
+       - tesseract
+  
+networks:
+  tesseract:
