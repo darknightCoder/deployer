@@ -1,11 +1,13 @@
 version: "3"
 services:
   geth-service:
-     image: foamspace/cliquebait:latest
-     ports: 
-       - "8545:8545"
+     image: darknightcoder/eth-poa:latest
+     environment:
+       - EXTERNAL_ALLOCS=0x9d8393dd96eeb9c9bca5c84e186d8b5eca96f595
+       - ALLOC_WEI=0xC08DE6FCB28B80000
+       - ACCOUNTS_TO_CREATE=10  
      networks: 
-       - tesseract
+       - tesseract-1
   
 networks:
-  tesseract:
+  tesseract-1:
