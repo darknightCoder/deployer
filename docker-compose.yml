@@ -1,0 +1,49 @@
+version: "3"
+services:
+  oem-ui: darknightcoder/tess-oem-ui:latest
+    ports:
+      - "3002:80"
+  user-ui: darknightcoder/tess-user-ui:latest
+    ports:
+      - "80:80"       
+  mongo:
+    image: mongo:3.2-jessie
+    ports:
+      - "27017:27017"
+    networks: 
+      - tesseract
+  geth-service:
+     image: foamspace/cliquebait:latest
+     ports: 
+       - "8545:8545"
+     networks: 
+       - tesseract
+  contract-deployer:
+     image: darknightcoder/tess-contract-deployer
+     networks: 
+      - tesseract
+     depends_on:
+      - mongo
+      - geth-service     
+  car-service:
+    image: darknightcoder/tess-cs:latest
+    ports: 
+      - "3002:3002"
+    networks: 
+      - tesseract
+  booking-service:
+    image: darknightcoder/tess-bs:latest
+    ports: 
+      - "3030:3030"
+    networks: 
+      - tesseract
+  main-service: 
+    image: darknightcoder/tess-main:latest-1
+    command: forever /main-service/server.js
+    ports: 
+      - "80:8081"
+    networks: 
+      - tesseract            
+ 
+networks:
+  tesseract:
