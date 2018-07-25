@@ -45,7 +45,7 @@ services:
     image: darknightcoder/tess-main:latest-1
     ports: 
       - "80:8081"
-    command: bash -c "while ping -c1 contract-deployer &>/dev/null do sleep 1; done; echo "Contract deployer service finished!" && forever /main-service/server.js"
+    command: bash -c "while ping -c1 contract-deployer &>/dev/null; do sleep 1; done && echo 'alright contract-deployer is badass lets start server' && forever /main-service/server.js"
     networks: 
       - tesseract            
  
