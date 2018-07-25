@@ -14,16 +14,6 @@ services:
       - "27017:27017"
     networks: 
       - tesseract
-  geth-service:
-     image: darknightcoder/eth-poa:latest
-     ports: 
-       - "8545:8545"
-     environment:
-       - EXTERNAL_ALLOCS=0x9d8393dd96eeb9c9bca5c84e186d8b5eca96f595
-       - ALLOC_WEI=4C485837A2FB712D800000
-       - ACCOUNTS_TO_CREATE=5
-     networks: 
-       - tesseract
   contract-deployer:
      image: darknightcoder/tess-contract-deployer:latest
      command: bash -c "sleep 10s && node contractSetup.js"
