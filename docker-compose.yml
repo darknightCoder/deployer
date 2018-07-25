@@ -1,9 +1,11 @@
 version: "3"
 services:
-  oem-ui: darknightcoder/tess-oem-ui:latest
+  oem-ui:
+    image: darknightcoder/tess-oem-ui:latest
     ports:
       - "3002:80"
-  user-ui: darknightcoder/tess-user-ui:latest
+  user-ui: 
+    image: darknightcoder/tess-user-ui:latest
     ports:
       - "80:80"       
   mongo:
@@ -13,13 +15,18 @@ services:
     networks: 
       - tesseract
   geth-service:
-     image: foamspace/cliquebait:latest
+     image: darknightocoder/eth-poa:latest
      ports: 
        - "8545:8545"
+     environment:
+       - EXTERNAL_ALLOCS=0x9d8393dd96eeb9c9bca5c84e186d8b5eca96f595
+       - ALLOC_WEI=4C485837A2FB712D800000
+       - ACCOUNTS_TO_CREATE=5
+
      networks: 
        - tesseract
   contract-deployer:
-     image: darknightcoder/tess-contract-deployer
+     image: darknightcoder/tess-contract-deployer:latest
      networks: 
       - tesseract
      depends_on:
