@@ -1,0 +1,53 @@
+version: "3"
+services:
+  oem-ui:
+    image: darknightcoder/tess-oem-ui:latest
+    ports:
+      - "4001:80"
+  user-ui: 
+    image: darknightcoder/tess-user-ui:latest
+    ports:
+      - "4002:80"       
+  mongo:
+    image: mongo:3.2-jessie
+    ports:
+      - "27017:27017"
+    networks: 
+      - tesseract
+  geth-service:
+     image: darknightcoder/eth-poa:latest
+     ports: 
+       - "8545:8545"
+     environment:
+       - EXTERNAL_ALLOCS=0x9d8393dd96eeb9c9bca5c84e186d8b5eca96f595
+       - ALLOC_WEI=4C485837A2FB712D800000
+       - ACCOUNTS_TO_CREATE=5
+     networks: 
+       - tesseract
+  contract-deployer:
+     image: darknightcoder/tess-contract-deployer:latest
+     command: bash -c "sleep 10s && node contractSetup.js"
+     networks: 
+      - tesseract     
+  car-service:
+    image: darknightcoder/tess-cs:latest
+    ports: 
+      - "3002:3002"
+    networks: 
+      - tesseract
+  booking-service:
+    image: darknightcoder/tess-bs:latest
+    ports: 
+      - "3030:3030"
+    networks: 
+      - tesseract
+  main-service: 
+    image: darknightcoder/tess-main:latest-1
+    ports: 
+      - "80:8081"
+    command: bash -c "while ping -c1 contract-deployer &>/dev/null; do sleep 1; done && echo 'alright contract-deployer is badass lets start server' && forever /main-service/server.js"
+    networks: 
+      - tesseract            
+ 
+networks:
+  tesseract:
